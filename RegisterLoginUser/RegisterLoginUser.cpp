@@ -131,6 +131,46 @@ namespace Controllers
             }
         }
     };
+
+    class LoginController
+    {
+        View::UI* _ui;
+        Models::Login* _login;
+
+    public:
+        LoginController() {
+            _ui = new View::UI;
+            _login = new Models::Login();
+        }
+        ~LoginController() {
+            delete _ui;
+            delete _login;
+        }
+        void doLogin() {
+            _ui->printText("### Bienvenido ###");
+            _ui->printEndl();
+            _ui->printText("Por favor, ingresa tu usuario y contraseña para ingresar al sistem: ");
+            _ui->printEndl();
+            _ui->printText("Ingresa tu usuario: ");
+            string userName = _ui->inputUsername();
+
+            cout << endl;
+
+            _ui->printText("Ingresa tu contraseña: ");
+            string password = _ui->inputPassword();
+
+            cout << endl;
+
+            bool isUserRegistred = _login->checkUserData(userName, password);
+
+            if (isUserRegistred) {
+                _ui->printText("Has ingresado correctamente");
+            }
+            else {
+                _ui->printText("Ups! Alguno de los datos es erroneo! Revisalos por favor!");
+            }
+        }
+    };
 }
 
 
@@ -140,8 +180,10 @@ int main()
     Models::Admin admin;
 
     Controllers::AdminController adminController (&ui, &admin);
+    Controllers::LoginController loginController;
 
-    adminController.showAllUsersData();
+    //adminController.showAllUsersData();
+    loginController.doLogin();
 
 
     return 0;
