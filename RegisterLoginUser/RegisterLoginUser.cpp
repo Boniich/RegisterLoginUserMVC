@@ -171,6 +171,39 @@ namespace Controllers
             }
         }
     };
+
+    class RegisterController
+    {
+        View::UI* _ui;
+        Models::Register* _register;
+
+     public:
+        RegisterController() {
+            _ui = new View::UI;
+            _register = new Models::Register();
+        }
+        ~RegisterController() {
+            delete _ui;
+            delete _register;
+        }
+
+        void doRegister() {
+            _ui->printText("### Registro ###");
+            _ui->printEndl();
+            _ui->printText("Por favor ingresa un usuario y contraseña para registrarte en el sistema");
+            _ui->printEndl();
+            _ui->printText("Usuario: ");
+            string username = _ui->inputUsername();
+            _ui->printText("Contraseña: ");
+            _ui->printEndl();
+            string password = _ui->inputPassword();
+            _register->addUser(username, password);
+            _ui->printText("Usuario registrado con exito!");
+        }
+
+    };
+
+
 }
 
 
@@ -178,13 +211,49 @@ int main()
 {
     View::UI ui;
     Models::Admin admin;
+    int option = NULL;
+    bool exit = false;
 
     Controllers::AdminController adminController (&ui, &admin);
     Controllers::LoginController loginController;
+    Controllers::RegisterController registerController;
 
-    //adminController.showAllUsersData();
-    loginController.doLogin();
 
+    //loginController.doLogin();
+
+    do
+    {
+        cout << "### Bienvenido ###" << endl;
+        cout << "#### Menu de opciones ####" << endl;
+        cout << "1- Login" << endl;
+        cout << "2- Register" << endl;
+        cout << "3- Admin panel" << endl;
+        cout << "0- Salir" << endl;
+
+        cout << "Introduce una opcion: ";
+        cin >> option;
+
+        switch (option)
+        {
+        case 1:
+            cin.ignore();
+            loginController.doLogin();
+            break;
+        case 2:
+            registerController.doRegister();
+            break;
+        case 3:
+            adminController.showAllUsersData();
+            break;
+        case 0:
+            exit = true;
+            break;
+        default:
+            cout << "Opcion no valida";
+            break;
+        }
+
+    } while (!exit);
 
     return 0;
 
