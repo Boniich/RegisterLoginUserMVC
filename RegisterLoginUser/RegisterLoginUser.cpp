@@ -122,9 +122,9 @@ namespace Controllers
         Models::Admin* _admin;
 
     public:
-        AdminController(View::UI* view, Models::Admin* admin) {
-            _ui = view;
-            _admin = admin;
+        AdminController() {
+            _ui = new View::UI;
+            _admin = new Models::Admin;
         }
         void showAllUsersData() {
             _ui->printText("Bienvenido Administrador, los usuarios registrados son: ");
@@ -173,6 +173,7 @@ namespace Controllers
 
             if (isUserRegistred) {
                 _ui->printText("Has ingresado correctamente");
+                _ui->printEndl();
             }
             else {
                 _ui->printText("Ups! Alguno de los datos es erroneo! Revisalos por favor!");
@@ -229,6 +230,7 @@ namespace Controllers
             bool isUserRegisteredCorrectly = _register->addUser(username, password);
             if (isUserRegisteredCorrectly) {
                 _ui->printText("Usted ha sido registrado correctamente");
+                _ui->printEndl();
             }
             else {
                 _ui->printText("No hemos podido registrarlo! Intentelo de nuevo");
@@ -244,12 +246,10 @@ namespace Controllers
 
 int main()
 {
-    View::UI ui;
-    Models::Admin admin;
     int option = NULL;
     bool exit = false;
 
-    Controllers::AdminController adminController (&ui, &admin);
+    Controllers::AdminController adminController;
     Controllers::LoginController loginController;
     Controllers::RegisterController registerController;
 
