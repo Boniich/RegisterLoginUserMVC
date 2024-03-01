@@ -155,7 +155,7 @@ namespace Controllers
             delete _login;
         }
         void doLogin() {
-            _ui->printText("### Bienvenido ###");
+            _ui->printText("### Login ###");
             _ui->printEndl();
             _ui->printText("Por favor, ingresa tu usuario y contraseña para ingresar al sistem: ");
             _ui->printEndl();
@@ -176,6 +176,7 @@ namespace Controllers
             }
             else {
                 _ui->printText("Ups! Alguno de los datos es erroneo! Revisalos por favor!");
+                _ui->printEndl();
             }
         }
     };
@@ -253,8 +254,6 @@ int main()
     Controllers::RegisterController registerController;
 
 
-    //loginController.doLogin();
-
     do
     {
         cout << "### Bienvenido ###" << endl;
@@ -271,13 +270,16 @@ int main()
         {
         case 1:
             cin.ignore();
+            system("cls");
             loginController.doLogin();
             break;
         case 2:
             cin.ignore();
+            system("cls");
             registerController.doRegister();
             break;
         case 3:
+            system("cls");
             adminController.showAllUsersData();
             break;
         case 0:
