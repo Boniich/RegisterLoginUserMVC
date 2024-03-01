@@ -59,6 +59,15 @@ namespace Models
 
     public:
         Register() : BaseModel() {};
+        bool checkExistingUser(const string usarName) {
+            for (auto element : _userData)
+            {
+                if (element->getUsername() == usarName) {
+                    return true;
+                }
+            }
+            return false;
+        }
         bool addUser(string usarName, string password) {
             _userData.push_back(new User(usarName, password));
             if (usarName == _userData.back()->getUsername()) {
@@ -187,15 +196,35 @@ namespace Controllers
         }
 
         void doRegister() {
+            bool exit = false;
+            string username = "";
+            string password = "";
+
             _ui->printText("### Registro ###");
             _ui->printEndl();
             _ui->printText("Por favor ingresa un usuario y contraseña para registrarte en el sistema");
             _ui->printEndl();
-            _ui->printText("Usuario: ");
-            string username = _ui->inputUsername();
+            do
+            {
+                _ui->printText("Usuario: ");
+                username = _ui->inputUsername();
+
+                bool isUsernameAlreadyRegister = _register->checkExistingUser(username);
+
+                if (isUsernameAlreadyRegister) {
+                    _ui->printText("Este nombre de usuario ya esta registrado! Intenta con otro");
+                }
+                else {
+                    exit = true;
+                }
+
+            } while (!exit);
+
+
             _ui->printText("Contraseña: ");
             _ui->printEndl();
-            string password = _ui->inputPassword();
+
+            password = _ui->inputPassword();
             bool isUserRegisteredCorrectly = _register->addUser(username, password);
             if (isUserRegisteredCorrectly) {
                 _ui->printText("Usted ha sido registrado correctamente");
