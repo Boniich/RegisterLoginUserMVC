@@ -59,8 +59,15 @@ namespace Models
 
     public:
         Register() : BaseModel() {};
-        void addUser(string usarName, string password) {
+        bool addUser(string usarName, string password) {
             _userData.push_back(new User(usarName, password));
+            if (usarName == _userData.back()->getUsername()) {
+                if (password == _userData.back()->getPassword()) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
     };
@@ -90,7 +97,7 @@ namespace Models
     class Admin : public BaseModel
     {
     public:
-        Admin() : BaseModel(){};
+        Admin() : BaseModel() {};
 
         list<User*> getUserList() {
             return _userData;
@@ -189,8 +196,14 @@ namespace Controllers
             _ui->printText("Contraseña: ");
             _ui->printEndl();
             string password = _ui->inputPassword();
-            _register->addUser(username, password);
-            _ui->printText("Usuario registrado con exito!");
+            bool isUserRegisteredCorrectly = _register->addUser(username, password);
+            if (isUserRegisteredCorrectly) {
+                _ui->printText("Usted ha sido registrado correctamente");
+            }
+            else {
+                _ui->printText("No hemos podido registrarlo! Intentelo de nuevo");
+            }
+            
         }
 
     };
