@@ -45,41 +45,36 @@ namespace Models
         }
     };
 
-    class UserFactory
+    class BaseModel
     {
+    protected:
         static list<User*> _userData;
-    public:
-        list<User*> getUserList() { return _userData; };
     };
 
-    list<User*> UserFactory::_userData = { new User("Boniich", "123456") };
+    list<User*> BaseModel::_userData = { new User("Boniich", "123456") };
 
 
-    class Register
+    class Register : public BaseModel
     {
-        UserFactory* _userFactory = nullptr;
+
     public:
-        Register() {
-            _userFactory = new UserFactory();
-        }
+        Register() : BaseModel() {};
         void addUser(string usarName, string password) {
-            _userFactory->getUserList().push_back(new User(usarName, password));
+            _userData.push_back(new User(usarName, password));
         }
 
     };
 
-    class Login
+    class Login : public BaseModel
     {
-        UserFactory* _userFactory = nullptr;
+  
 
     public:
-        Login() {
-            _userFactory = new UserFactory();
-        }
+        Login() : BaseModel() {}
 
         bool checkUserData(string username, string password)
         {
-            for (auto element : _userFactory->getUserList()) {
+            for (auto element : _userData) {
                 if (element->getUsername() == username) {
                     if (element->getPassword() == password) {
                         return true;
@@ -92,16 +87,13 @@ namespace Models
 
     };
 
-    class Admin
+    class Admin : public BaseModel
     {
-        UserFactory* _userFactory = nullptr;
     public:
-        Admin() {
-            _userFactory = new UserFactory();
-        }
+        Admin() : BaseModel(){};
 
         list<User*> getUserList() {
-            return _userFactory->getUserList();
+            return _userData;
         }
     };
 
