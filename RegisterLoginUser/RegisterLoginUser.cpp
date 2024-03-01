@@ -240,6 +240,7 @@ int main()
             loginController.doLogin();
             break;
         case 2:
+            cin.ignore();
             registerController.doRegister();
             break;
         case 3:
