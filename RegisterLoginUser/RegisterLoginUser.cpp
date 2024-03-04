@@ -49,6 +49,11 @@ namespace Models
     {
     protected:
         static list<User*> _userData;
+        ~BaseModel() {
+            for (auto item : _userData) {
+                delete item;
+            }
+        }
     };
 
     list<User*> BaseModel::_userData = { new User("Boniich", "123456") };
@@ -125,6 +130,10 @@ namespace Controllers
         AdminController() {
             _ui = new View::UI;
             _admin = new Models::Admin;
+        }
+        ~AdminController() {
+            delete _ui;
+            delete _admin;
         }
         void showAllUsersData() {
             _ui->printText("Bienvenido Administrador, los usuarios registrados son: ");
@@ -283,7 +292,7 @@ int main()
             adminController.showAllUsersData();
             break;
         case 0:
-            exit = true;
+            exit = true;                                                
             break;
         default:
             cout << "Opcion no valida";
